@@ -1,0 +1,41 @@
+<%- contentFor('title') %>Liste des tâches <%- contentFor('main') %>
+<h1>Mon index</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Title</th>
+      <th>Desc</th>
+      <th>Start</th>
+      <th>End</th>
+      <th>Done</th>
+      <th href="/tasks/create">Create</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% tasks.forEach(function(task) { %>
+    <tr>
+      <td><%= task.id %></td>
+      <td><%= task.title %></td>
+      <td><%= task.description %></td>
+      <td><%= task.date_debut %></td>
+      <td><%= task.date_fin %></td>
+      <td>
+        <a href="/tasks/toggle-done/<%= task.id %>"><%=task.done%></a>
+      </td>
+      <td>
+        <a href="/tasks/edit/<%= task.id%>">Edit</a>
+        <form action="/tasks/delete/<%= task.id%>" method="POST">
+          <input type="hidden" name="_method" value="DELETE" />
+          <input
+            type="submit"
+            value="Delete"
+            onclick="return confirm('Êtes-vous sûr de vouloir supprimer?')"
+          />
+        </form>
+      </td>
+    </tr>
+    <% }) %>
+  </tbody>
+</table>

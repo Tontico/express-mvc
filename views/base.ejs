@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      <%= typeof title !== 'undefined' ? title : 'Gestionnaire de tâches' %>
+    </title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="/tasks">Liste des tâches</a></li>
+          <li><a href="/tasks/create">Créer une tâche</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main><%- main %></main>
+
+    <footer>
+      <p>&copy; <%= new Date().getFullYear() %> - Gestionnaire de tâches</p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,4 @@
+<%- contentFor("main")%>
+<form action="/tasks/update/<%= task.id%>" method="post">
+  <%- include('_taskForm') %>
+</form>
