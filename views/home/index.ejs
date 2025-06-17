@@ -1,0 +1,32 @@
+<%- contentFor("main")%>
+<div class="max-w-6xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
+  <h1>Bienvenue dans notre Agence de Voyage</h1>
+  <p>Découvrez nos destinations exceptionnelles</p>
+</div>
+
+<div class="max-w-6xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
+  <div class="text-center mb-6">
+    <h2>Voyages en vedette</h2>
+    <% if (travels.length === 0) { %>
+    <p>Aucun voyage disponible pour le moment.</p>
+    <% } else { %>
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+    >
+      <% travels.forEach(travel => { %>
+      <div
+        class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow duration-200"
+      >
+        <h3><%= travel.depart %> → <%= travel.destination %></h3>
+        <p>
+          Du <%= travel.start_date.toLocaleDateString() %> au <%=
+          travel.end_date.toLocaleDateString() %>
+        </p>
+        <p class=""><%= travel.price %>€</p>
+        <p class=""><%= travel.places %> places disponibles</p>
+      </div>
+      <% }) %>
+    </div>
+    <% } %>
+  </div>
+</div>

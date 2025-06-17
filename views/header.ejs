@@ -1,0 +1,26 @@
+<nav class="p-4 text-white flex justify-between">
+  <ul class="flex justify-start space-x-4">
+    <li><a href="/" class="hover:text-blue-200">🏠 Accueil</a></li>
+    <li><a href="/travel" class="hover:text-blue-200">✈️ Liste des vols</a></li>
+
+    <% if (isAdmin) { %>
+    <li>
+      <a href="/admin/travel" class="hover:text-yellow-200"
+        >🔧 Administration</a
+      >
+    </li>
+    <% } else { %> <% } %>
+  </ul>
+
+  <ul class="flex justify-end space-x-4">
+    <% if (isAuthenticated) { %>
+    <li>Bonjour, <%= user.firstname %> !</li>
+    <li><a href="/auth/logout" class="hover:text-red-200">Déconnexion</a></li>
+    <% } else { %>
+    <li><a href="/auth/login" class="hover:text-blue-200">Connexion</a></li>
+    <li>
+      <a href="/auth/register" class="hover:text-blue-200">Inscription</a>
+    </li>
+    <% } %>
+  </ul>
+</nav>

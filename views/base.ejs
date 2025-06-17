@@ -6,22 +6,13 @@
     <title>
       <%= typeof title !== 'undefined' ? title : 'Gestionnaire de tâches' %>
     </title>
-    <link rel="stylesheet" href="/css/styles.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
-    <header>
-      <nav>
-        <ul>
-          <li><a href="/tasks">Liste des tâches</a></li>
-          <li><a href="/tasks/create">Créer une tâche</a></li>
-        </ul>
-      </nav>
-    </header>
+    <header class="bg-sky-400 p-3"><%- include('header') %></header>
 
-    <main><%- main %></main>
+    <main class="w-full h-screen"><%- main %></main>
 
-    <footer>
-      <p>&copy; <%= new Date().getFullYear() %> - Gestionnaire de tâches</p>
-    </footer>
+    <footer><%- include('footer') %></footer>
   </body>
 </html>
