@@ -19,12 +19,12 @@ class travelRepository {
     return this.travel.create(travelData);
   }
 
-  async update(taskData, options) {
-    return this.travel.update(taskData, options);
+  async update(travelData, id) {
+    return this.travel.updateOne({ _id: id }, travelData);
   }
 
-  async destroy(options) {
-    return this.travel.destroy(options);
+  async delete(id) {
+    return this.travel.findByIdAndDelete(id);
   }
 }
 module.exports = new travelRepository();

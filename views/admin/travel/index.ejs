@@ -1,13 +1,18 @@
 <%- contentFor('title') %>Liste des voyages <%- contentFor('main') %>
 <div class="max-w-6xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
   <h1 class="text-4xl font-bold mb-6 text-center">Liste des voyages</h1>
-  <% if (isAdmin) { %>
   <a
     class="bg-neutral-500 text-white px-4 py-2 rounded hover:bg-neutral-700 transition-colors duration-200"
-    href="/travel/create"
+    href="/admin/travel/create"
     >creer un voyage</a
   >
-  <% }%>
+  <%if (message){ %>
+  <div
+    class="max-w-6xl mx-auto mt-8 p-6 bg-green-100 text-green-800 rounded-lg shadow-md"
+  >
+    <p><%= message %></p>
+  </div>
+  <% } %>
   <table class="min-w-full my-5 divide-y divide-gray-400">
     <thead class="bg-gray-200 h-16">
       <tr>
@@ -18,9 +23,7 @@
         <th>date d'arrivée</th>
         <th>Nombre de places</th>
         <th>Prix du voyage</th>
-        <% if (isAdmin) { %>
         <th>Actions</th>
-        <% }%>
       </tr>
     </thead>
 
@@ -40,7 +43,6 @@
         <td><%= travel.end_date %></td>
         <td><%= travel.places %></td>
         <td><%= travel.price %></td>
-        <% if (isAdmin) { %>
         <td class="flex justify-center space-x-2 items-center h-16">
           <a
             class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors duration-200"
@@ -57,7 +59,6 @@
             />
           </form>
         </td>
-        <% } %>
       </tr>
       <% }) %> <% } %>
     </tbody>

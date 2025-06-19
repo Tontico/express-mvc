@@ -12,7 +12,7 @@ class authService {
   async register(data, response) {
     try {
       const { password, email, firstname, lastname, phone } = data;
-      const existingUser = await this.usersRepository.findOne(email);
+      const existingUser = await this.usersRepository.findOne({ email });
       if (existingUser) {
         throw new Error("User already exists");
       }
@@ -69,6 +69,19 @@ class authService {
     }
   }
 
+  async logout(request, response) {
+    try {
+      const token = request.cookies.token;
+      if (!token) {
+        throw new Error("No token found");
+      }
+      response.clearCookie("token");
+      return { message: "Logout successful" };
+    } catch (error) {
+      throw new Error("Logout failed: " + error.message);
+    }
+  }
+
   generateToken(user) {
     try {
       const token = this.jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
@@ -82,7 +95,7 @@ class authService {
   generateSecureCookie(response, token) {
     const responseCookie = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: false,
       maxAge: 24 * 60 * 60 * 1000,
     };
     response.cookie("token", token, responseCookie);
@@ -91,9 +104,7 @@ class authService {
   async verifyToken(token) {
     try {
       const decoded = this.jwt.verify(token, process.env.SECRET_KEY);
-      const user = await this.usersRepository.findOne({
-        where: { id: decoded.id },
-      });
+      const user = await this.usersRepository.findById(decoded.id);
       return user || null;
     } catch (error) {
       throw new Error("Token verification failed: " + error.message);

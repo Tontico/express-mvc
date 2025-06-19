@@ -8,8 +8,8 @@
     <%= error %>
   </div>
   <% } %>
-  <form action="/admin/travel/update/<%= travel.id%>" method="post">
-    <input type="hidden" name="_method" value="PUT" />
+  <form action="/admin/travel/update/<%= travel.id%>" method="POST">
+    <input type="hidden" name="_method" value="PATCH" />
     <%- include('_travelForm') %>
   </form>
 </div>

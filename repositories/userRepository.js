@@ -12,5 +12,9 @@ class userRepository {
   async create(userData) {
     return this.users.create(userData);
   }
+
+  async findById(id) {
+    return this.users.findById(id);
+  }
 }
 module.exports = new userRepository();

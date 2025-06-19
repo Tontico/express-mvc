@@ -1,4 +1,11 @@
-<%- contentFor("main")%>
+<%- contentFor("main")%> <%if (message){ %>
+<div
+  class="max-w-6xl mx-auto mt-8 p-6 bg-green-100 text-green-800 rounded-lg shadow-md"
+>
+  <p><%= message %></p>
+</div>
+<% } %>
+
 <div class="max-w-6xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
   <h1>Bienvenue dans notre Agence de Voyage</h1>
   <p>Découvrez nos destinations exceptionnelles</p>
@@ -14,7 +21,8 @@
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
     >
       <% travels.forEach(travel => { %>
-      <div
+      <a
+        href="/travel/<%= travel.id %>"
         class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow duration-200"
       >
         <h3><%= travel.depart %> → <%= travel.destination %></h3>
@@ -24,7 +32,7 @@
         </p>
         <p class=""><%= travel.price %>€</p>
         <p class=""><%= travel.places %> places disponibles</p>
-      </div>
+      </a>
       <% }) %>
     </div>
     <% } %>

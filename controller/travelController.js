@@ -8,17 +8,39 @@ class TravelController {
     try {
       const formattedTravels = await this.travelService.getAllTravels();
       const path = req.originalUrl;
+      const query = req.query.message || null;
       let renderPath = "travel/index";
-      if (path === "/admin/travel") {
+      if (path.includes("/admin/travel")) {
         renderPath = "admin/travel/index";
       }
 
-      return res.render(renderPath, { travels: formattedTravels });
+      return res.render(renderPath, {
+        travels: formattedTravels,
+        message: query ? "Voyage supprimé avec succès" : null,
+      });
     } catch (error) {
       console.error("Error fetching tasks:", error);
       return res.render("travel/index", {
         error: "Error fetching tasks: " + error.message,
         travels: [],
+      });
+    }
+  };
+
+  show = async (req, res) => {
+    try {
+      const travel = await this.travelService.getTravelById(req.params.id);
+      return res.render("travel/show", {
+        title: "Voyage",
+        travel: travel,
+      });
+    } catch (error) {
+      return res.render("travel/show", {
+        title: "Voyage",
+        error:
+          "Une erreur est survenue lors de la récupération du voyage: " +
+          error.message,
+        travel: null,
       });
     }
   };
@@ -78,15 +100,15 @@ class TravelController {
     }
   };
 
-  // delete = async (req, res) => {
-  //   try {
-  //     await this.travelService.deleteTask(req.params.id);
-  //     res.redirect("/tasks");
-  //   } catch (error) {
-  //     console.error("Error deleting task:", error);
-  //     return res.status(500).send("Internal Server Error");
-  //   }
-  // };
+  delete = async (req, res) => {
+    try {
+      const isDeleted = await this.travelService.deleteTravel(req.params.id);
+      res.redirect(`/admin/travel?message=${isDeleted}`);
+    } catch (error) {
+      console.error("Error deleting travel:", error);
+      return res.status(500).send("Internal Server Error");
+    }
+  };
 
   // toggleDone = async (req, res) => {
   //   try {

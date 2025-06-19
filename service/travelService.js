@@ -42,9 +42,9 @@ class TravelService {
     }
   }
 
-  async getTaskById(id) {
+  async getTravelById(id) {
     try {
-      const task = await this.tasksRepository.findByPk(id);
+      const task = await this.travelRepository.findById(id);
       if (!task) {
         return new Error("No tasks found");
       }
@@ -83,9 +83,7 @@ class TravelService {
       if (!travel) {
         throw new Error("travel not found");
       }
-      const updated = await this.travelRepository.update(travelData, {
-        _id: id,
-      });
+      const updated = await this.travelRepository.update(travelData, id);
 
       if (!updated) {
         return new Error("No travel found");
@@ -119,16 +117,15 @@ class TravelService {
     }
   }
 
-  async deleteTask(id) {
+  async deleteTravel(id) {
     try {
-      const task = await this.tasksRepository.findByPk(id);
-      if (!task) {
-        throw new Error("Task not found");
+      const travel = await this.travelRepository.delete(id);
+      if (!travel) {
+        throw new Error("Travel not found");
       }
-      await this.tasksRepository.destroy({ where: { id } });
-      return { message: "Task deleted successfully" };
+      return true;
     } catch (error) {
-      throw new Error("Error deleting task: " + error.message);
+      throw new Error("Error deleting travel: " + error.message);
     }
   }
 

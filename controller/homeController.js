@@ -8,8 +8,10 @@ class HomeController {
   index = async (req, res) => {
     try {
       const featuredTravels = await this.homeService.index();
+      const logoutMsg = req.query.message || null;
       res.render("home/index", {
         title: "Accueil - Agence de Voyage",
+        message: logoutMsg ? "Déconnecté avec succès" : null,
         travels: featuredTravels,
       });
     } catch (error) {

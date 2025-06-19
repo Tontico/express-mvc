@@ -27,7 +27,8 @@ class authController {
       res.render("auth/register", {
         title: "Inscription",
         error:
-          "Une erreur est survenue lors de l'inscription, veuillez réessayer.",
+          "Une erreur est survenue lors de l'inscription, veuillez réessayer : " +
+          error.message,
       });
     }
   };
@@ -46,16 +47,9 @@ class authController {
     }
   };
 
-  // Déconnexion
-  logout = (req, res) => {
-    req.session.destroy((err) => {
-      if (err) {
-        return res
-          .status(500)
-          .json({ message: "Erreur lors de la déconnexion" });
-      }
-      res.redirect("/");
-    });
+  logout = async (req, res) => {
+    await this.authService.logout(req, res);
+    res.redirect("/?message=true");
   };
 }
 
