@@ -1,0 +1,112 @@
+<table class="w-full my-5 table-fixed border-collapse">
+  <thead class="bg-gray-200 h-16">
+    <tr class="text-gray-700 font-semibold">
+      <th class="w-[10%] px-2 text-center">Id</th>
+      <th class="w-[5%] px-2 text-center">Status</th>
+      <th class="w-[10%] px-2 text-center">Vols</th>
+      <th class="w-[10%] px-2 text-center">Horaires</th>
+      <th class="w-[5%] px-2 text-center">Places max</th>
+      <th class="w-[5%] px-2 text-center">Places dispo</th>
+      <th class="w-[5%] px-2 text-center">Prix</th>
+      <% if(isAdmin && isAdminPath) { %>
+      <th class="w-[5%] px-1 text-center">Enregistrements</th>
+      <th class="w-[5%] px-1 text-center">Documents</th>
+      <th class="w-[5%] px-1 text-center">Paiements</th>
+      <% } %>
+      <th class="w-[10%] px-2 text-center">Actions</th>
+    </tr>
+  </thead>
+
+  <tbody class="divide-y divide-gray-200 text-center">
+    <% if (!travels.length) { %>
+    <tr>
+      <td colspan="10" class="text-center text-red-500 py-4">
+        Aucun voyage disponible pour le moment.
+      </td>
+    </tr>
+    <% } else { %> <% travels.forEach((travel) => { %>
+    <tr class="hover:bg-sky-100 transition-colors duration-200 h-16">
+      <td class="w-[10%] px-2 text-center">
+        <%= travel.id.substring(0, 8) %>...
+      </td>
+      <td class="px-2 text-center">
+        <span
+          class="<%= travel.status === 'Disponible' ? 'text-green-600' : 'text-red-600' %> text-xs font-semibold"
+        >
+          <%= travel.status %>
+        </span>
+      </td>
+      <td class="px-2 text-center">
+        <%= travel.depart %> → <%= travel.destination %>
+      </td>
+
+      <td class="px-2 text-center">
+        <%= travel.start_date %> - <%= travel.end_date %>
+      </td>
+
+      <td class="px-2 text-center"><%= travel.places %></td>
+      <td class="px-2 text-center"><%= travel.available_places %></td>
+      <td class="px-2 text-center"><%= travel.price %></td>
+      <% if(isAdmin && isAdminPath) { %>
+      <td class="px-1 text-center">
+        <a
+          class="bg-blue-500 text-white p-1 rounded hover:bg-blue-700 transition-colors duration-200 text-xl"
+          href="/admin/registration/travel/<%= travel.id %>"
+          >📋</a
+        >
+      </td>
+      <td class="px-1 text-center">
+        <a
+          class="bg-purple-500 text-white p-1 rounded hover:bg-purple-700 transition-colors duration-200 text-xl"
+          href="/admin/document/travel/<%= travel.id %>"
+          >📄</a
+        >
+      </td>
+      <td class="px-1 text-center">
+        <a
+          class="bg-yellow-500 text-white p-1 rounded hover:bg-yellow-700 transition-colors duration-200 text-xl"
+          href="/admin/payment/travel/<%= travel.id %>"
+          >💰</a
+        >
+      </td>
+      <% } %>
+
+      <td class="px-1 text-center">
+        <div class="flex gap-3 justify-center">
+          <% if(isAdmin && isAdminPath) { %>
+          <a
+            class="bg-orange-500 text-white p-1 rounded hover:bg-orange-700 transition-colors duration-200 text-xl"
+            href="/admin/document/<%= travel.id %>"
+            >📑</a
+          >
+          <a
+            class="bg-green-500 text-white p-1 rounded hover:bg-green-700 transition-colors duration-200 text-xl"
+            href="/admin/travel/edit/<%= travel.id %>"
+            >✏️</a
+          >
+          <form
+            action="/admin/travel/delete/<%= travel.id %>"
+            method="POST"
+            class="inline"
+          >
+            <input type="hidden" name="_method" value="DELETE" />
+            <input
+              class="bg-red-500 text-white p-1 rounded hover:bg-red-700 transition-colors duration-200 text-xl cursor-pointer"
+              type="submit"
+              value="🗑️"
+              onclick="return confirm('Supprimer ce voyage ?')"
+            />
+          </form>
+        </div>
+        <% } else { %> <% if(travel.status === 'Disponible') { %>
+        <a
+          class="bg-green-500 text-white p-1 rounded hover:bg-green-700 transition-colors duration-200 text-xl"
+          href="/travel/<%= travel.id%>"
+          >👁️</a
+        >
+        <% } %> <% } %>
+      </td>
+    </tr>
+    <% }) %> <% } %>
+  </tbody>
+</table>

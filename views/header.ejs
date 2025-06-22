@@ -14,7 +14,8 @@
 
   <ul class="flex justify-end space-x-4">
     <% if (isAuthenticated) { %>
-    <li>Bonjour, <%= user.firstname %> !</li>
+    <li>🙍🏻‍♂️ Bonjour, <%= user.firstname %> !</li>
+    <li><a href="/profile/me" class="hover:text-blue-200">Mon profil</a></li>
     <li><a href="/auth/logout" class="hover:text-red-200">Déconnexion</a></li>
     <% } else { %>
     <li><a href="/auth/login" class="hover:text-blue-200">Connexion</a></li>

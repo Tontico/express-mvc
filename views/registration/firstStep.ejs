@@ -1,0 +1,58 @@
+<%- contentFor("main") %>
+<div class="max-w-3xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
+  <h2 class="text-2xl font-bold mb-6 text-center">
+    Etape 1 : Inscription pour le vol N°<%= travel.id %>
+  </h2>
+
+  <% if (typeof error !=="undefined") { %>
+  <div
+    class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"
+  >
+    <%= error %>
+  </div>
+  <% } %>
+
+  <form action="/registration/<%= travel.id%>" method="POST" class="space-y-4">
+    <p>Vous êtes sur le point de vous enregistrez sur le vol :</p>
+    <p class="font-semibold">
+      <%= travel.depart %> à destination de <%= travel.destination %>
+    </p>
+    <p class="text-gray-600 mb-2">
+      <strong>Date de départ :</strong> <%=
+      travel.start_date.toLocaleDateString() %>
+    </p>
+    <p class="text-gray-600 mb-2">
+      <strong>Date d'arrivée :</strong> <%= travel.end_date.toLocaleDateString()
+      %>
+    </p>
+    <p class="text-gray-600 mb-2">
+      <strong>Capacité de transport :</strong> <%= travel.places %>
+    </p>
+    <p class="text-gray-600 mb-2">
+      <strong>Nombre de places disponibles :</strong> <%=
+      travel.available_places %>
+    </p>
+    <p class="text-gray-600 mb-4">
+      <strong>Prix du voyage :</strong> <%= travel.price %>€
+    </p>
+    <% if (existingRegistration) { %>
+    <div
+      class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4"
+    >
+      <p>Vous êtes déjà inscrit à ce voyage.</p>
+      <a
+        href="/document/<%=existingRegistration._id%>"
+        class="text-yellow-600 hover:underline"
+        >Voir vos documents</a
+      >
+    </div>
+    <% } else { %>
+    <button
+      type="submit"
+      class="bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600 transition-colors duration-200 w-full"
+    >
+      Valider
+    </button>
+    <% } %>
+  </form>
+</div>

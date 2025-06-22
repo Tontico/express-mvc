@@ -24,14 +24,18 @@
       <%= travel.end_date.toLocaleDateString() %>
     </p>
     <p class="text-gray-600 mb-2">
-      <strong>Nombre de places disponibles :</strong> <%= travel.places %>
+      <strong>Capacité de transport :</strong> <%= travel.places %>
+    </p>
+    <p class="text-gray-600 mb-2">
+      <strong>Nombre de places disponibles :</strong> <%=
+      travel.available_places %>
     </p>
     <p class="text-gray-600 mb-4">
       <strong>Prix du voyage :</strong> <%= travel.price %>€
     </p>
     <div class="text-center">
       <a
-        href="/travel/book/<%= travel.id %>"
+        href="/registration/<%= travel.id %>"
         class="bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600 transition-colors duration-200"
         >Réserver ce voyage</a
       >

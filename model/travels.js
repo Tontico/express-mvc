@@ -30,6 +30,12 @@ const travelsSchema = new mongoose.Schema({
     enum: ["available", "booked", "canceled"],
     default: "available",
   },
+  documents_required: [
+    {
+      type: String,
+      enum: ["passport", "visa", "insurance", "vaccination", "other"],
+    },
+  ],
 });
 
 module.exports = mongoose.model("Travel", travelsSchema);

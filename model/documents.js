@@ -6,17 +6,18 @@ const documentsSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  id_travel: {
+  id_registration: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Travel",
-    required: true,
-  },
-  title: {
-    type: String,
+    ref: "Registration",
     required: true,
   },
   url: {
     type: String,
+    required: true,
+  },
+  type: {
+    type: String,
+    enum: ["passport", "visa", "insurance", "other"],
     required: true,
   },
 });

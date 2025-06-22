@@ -1,18 +1,49 @@
 const express = require("express");
-const router = express.Router();
-const controller = require("../controller/travelController");
+
+const travelController = require("../controller/travelController");
+const registrationController = require("../controller/registrationController");
+const documentController = require("../controller/documentController");
+const paymentController = require("../controller/paymentController");
+
 const { isAuthenticated, isAdmin } = require("../middleware/auth");
+
+const {
+  createTravelValidator,
+  updateTravelValidator,
+} = require("../validator/travelValidator");
+
+const router = express.Router();
 
 router.use(isAuthenticated);
 router.use(isAdmin);
 
-router.get("/travel", controller.index);
+router.get("/travel", travelController.index);
+router.get("/travel/create", travelController.create);
+router.post("/travel/store", createTravelValidator, travelController.store);
+router.get("/travel/edit/:id", travelController.edit);
+router.patch(
+  "/travel/update/:id",
+  updateTravelValidator,
+  travelController.update
+);
 
-router.get("/travel/create", controller.create);
-router.post("/travel/store", controller.store);
+router.delete("/travel/delete/:id", travelController.delete);
 
-router.get("/travel/edit/:id", controller.edit);
-router.patch("/travel/update/:id", controller.update);
+router.post("/document/:id_travel", documentController.addRequiredDocuments);
+router.get("/document/:id_travel", documentController.addRequiredDocumentsForm);
+router.get(
+  "/document/travel/:id_travel",
+  documentController.getAllDocumentsForTravel
+);
 
-router.delete("/travel/delete/:id", controller.delete);
+router.get(
+  "/registration/travel/:id_travel",
+  registrationController.registrationByTravelId
+);
+
+router.get(
+  "/payment/travel/:id_travel",
+  paymentController.getAllPaymentsForTravel
+);
+
 module.exports = router;

@@ -1,6 +1,4 @@
-const Travel = require("../model/travels");
 const HomeService = require("../service/homeService");
-
 class HomeController {
   constructor() {
     this.homeService = HomeService;
@@ -9,9 +7,11 @@ class HomeController {
     try {
       const featuredTravels = await this.homeService.index();
       const logoutMsg = req.query.message || null;
+      const successInscription = req.query.success || null;
       res.render("home/index", {
         title: "Accueil - Agence de Voyage",
         message: logoutMsg ? "Déconnecté avec succès" : null,
+        success: successInscription,
         travels: featuredTravels,
       });
     } catch (error) {
@@ -20,10 +20,6 @@ class HomeController {
         .status(500)
         .render("home/index", { title: "Erreur", travels: [], error });
     }
-  };
-
-  about = async (req, res) => {
-    res.render("home/about", { title: "À propos" });
   };
 }
 

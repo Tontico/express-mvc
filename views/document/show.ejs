@@ -1,0 +1,29 @@
+<%- contentFor('main') %>
+<div class="max-w-3xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
+  <h2 class="text-2xl font-bold mb-6 text-center">Mes documents</h2>
+
+  <% if (documents.length > 0) { %>
+  <div class="space-y-3">
+    <% documents.forEach((document) => { %>
+    <div
+      class="flex items-center justify-between p-4 border border-gray-200 rounded-lg"
+    >
+      <span class="font-medium">
+        <%= document.type === 'passport' ? 'Passeport' : document.type ===
+        'visa' ? 'Visa' : document.type %>
+      </span>
+
+      <a
+        href="<%= document.url %>"
+        target="_blank"
+        class="text-blue-600 hover:text-blue-800 underline"
+      >
+        Voir le document
+      </a>
+    </div>
+    <% }) %>
+  </div>
+  <% } else { %>
+  <p class="text-gray-500 text-center">Aucun document trouvé.</p>
+  <% } %>
+</div>

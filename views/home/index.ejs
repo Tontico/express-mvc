@@ -1,40 +1,206 @@
-<%- contentFor("main")%> <%if (message){ %>
-<div
-  class="max-w-6xl mx-auto mt-8 p-6 bg-green-100 text-green-800 rounded-lg shadow-md"
->
-  <p><%= message %></p>
+<%- contentFor("main")%> <% if (message) { %>
+<div class="max-w-4xl mx-auto mb-6">
+  <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
+    <div class="flex">
+      <div class="flex-shrink-0">
+        <svg
+          class="h-5 w-5 text-green-400"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </div>
+      <div class="ml-3">
+        <p class="text-sm text-green-700 font-medium"><%= message %></p>
+      </div>
+    </div>
+  </div>
 </div>
 <% } %>
 
-<div class="max-w-6xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
-  <h1>Bienvenue dans notre Agence de Voyage</h1>
-  <p>Découvrez nos destinations exceptionnelles</p>
+<div class="max-w-4xl mx-auto mb-12">
+  <div
+    class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-8 text-center border border-gray-100"
+  >
+    <h1 class="text-4xl font-bold text-gray-800 mb-4">
+      Bienvenue chez <span class="text-blue-600">TravelNow</span>
+    </h1>
+    <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+      Découvrez nos destinations exceptionnelles et vivez des expériences
+      inoubliables avec notre sélection de voyages organisés
+    </p>
+    <div class="mt-6">
+      <a
+        href="/travel"
+        class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200"
+      >
+        <svg
+          class="w-5 h-5 mr-2"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+          />
+        </svg>
+        Découvrir tous nos voyages
+      </a>
+    </div>
+  </div>
 </div>
 
-<div class="max-w-6xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
-  <div class="text-center mb-6">
-    <h2>Voyages en vedette</h2>
-    <% if (travels.length === 0) { %>
-    <p>Aucun voyage disponible pour le moment.</p>
-    <% } else { %>
-    <div
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
-    >
-      <% travels.forEach(travel => { %>
-      <a
-        href="/travel/<%= travel.id %>"
-        class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow duration-200"
-      >
-        <h3><%= travel.depart %> → <%= travel.destination %></h3>
-        <p>
-          Du <%= travel.start_date.toLocaleDateString() %> au <%=
-          travel.end_date.toLocaleDateString() %>
-        </p>
-        <p class=""><%= travel.price %>€</p>
-        <p class=""><%= travel.places %> places disponibles</p>
-      </a>
-      <% }) %>
+<% if(success) { %>
+<div class="max-w-4xl mx-auto mb-6">
+  <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
+    <div class="flex">
+      <div class="flex-shrink-0">
+        <svg
+          class="h-5 w-5 text-green-400"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </div>
+      <div class="ml-3">
+        <a href="/registration/me %>" class="text-sm text-green-700 font-medium"
+          >Inscription validé, cliquez pour voir les détails</a
+        >
+      </div>
     </div>
-    <% } %>
   </div>
+</div>
+
+<% } %>
+<div class="max-w-6xl mx-auto">
+  <div class="text-center mb-8">
+    <h2 class="text-3xl font-bold text-gray-800 mb-2">Voyages en vedette</h2>
+    <div class="w-16 h-1 bg-blue-600 mx-auto rounded-full"></div>
+  </div>
+
+  <% if (travels.length === 0) { %>
+  <div class="text-center py-12">
+    <svg
+      class="w-16 h-16 text-gray-300 mx-auto mb-4"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+      />
+    </svg>
+    <p class="text-gray-500 text-lg">Aucun voyage disponible pour le moment.</p>
+    <p class="text-gray-400 text-sm mt-2">
+      Revenez bientôt pour découvrir nos nouvelles destinations !
+    </p>
+  </div>
+  <% } else { %>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 my-10">
+    <% travels.forEach(travel => { %>
+    <a href="/travel/<%= travel.id %>" class="group block">
+      <div
+        class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden border border-gray-100"
+      >
+        <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-4">
+          <h3
+            class="text-white font-semibold text-lg group-hover:text-blue-100 transition-colors"
+          >
+            <%= travel.depart %> → <%= travel.destination %>
+          </h3>
+        </div>
+
+        <div class="p-5">
+          <div class="space-y-3">
+            <div class="flex items-center text-gray-600">
+              <svg
+                class="w-4 h-4 mr-2 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+              <span class="text-sm"
+                >Du <%= travel.start_date %> au <%= travel.end_date %></span
+              >
+            </div>
+
+            <div class="flex items-center justify-between">
+              <div class="flex items-center text-gray-600">
+                <svg
+                  class="w-4 h-4 mr-2 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+                  />
+                </svg>
+                <span class="font-semibold text-lg text-blue-600"
+                  ><%= travel.price %></span
+                >
+              </div>
+            </div>
+
+            <div
+              class="flex items-center justify-between pt-2 border-t border-gray-100"
+            >
+              <div class="flex items-center text-gray-500">
+                <svg
+                  class="w-4 h-4 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                  />
+                </svg>
+                <span class="text-sm"
+                  ><%= travel.available_places %> places disponibles</span
+                >
+              </div>
+
+              <span
+                class="text-xs px-2 py-1 bg-green-100 text-green-800 rounded-full font-medium"
+              >
+                <%= travel.status %>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+    <% }) %>
+  </div>
+  <% } %>
 </div>

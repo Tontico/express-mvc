@@ -1,41 +1,27 @@
-const travelRepository = require("../repositories/travelRepository");
+const travelRepository = require("../repository/travelRepository");
+const registrationRepository = require("../repository/registrationRepository");
 const moment = require("moment");
 
 class TravelService {
   constructor() {
     this.travelRepository = travelRepository;
+    this.registrationRepository = registrationRepository;
     this.moment = moment;
   }
 
-  async getAllTravels() {
+  async getAllTravels(user) {
     try {
-      const allTravels = await this.travelRepository.findAll();
+      let allTravels;
+      if (user && user.role === "admin") {
+        allTravels = await this.travelRepository.findAll();
+      } else {
+        allTravels = await this.travelRepository.findAllAvailable();
+      }
       if (!allTravels || allTravels.length === 0) {
         return new Error("No tasks found");
       }
-      const formattedTravels = allTravels.map((travel) => {
-        return {
-          id: travel.id,
-          depart:
-            travel.depart.toUpperCase()[0] +
-            travel.depart.slice(1).toLowerCase(),
-          places: travel.places,
-          price: travel.price.toFixed(2).replace(".", ",") + " €",
-          destination:
-            travel.destination.toUpperCase()[0] +
-            travel.destination.slice(1).toLowerCase(),
-          start_date: travel.start_date.toLocaleDateString("fr-FR", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-          }),
-          end_date: travel.end_date.toLocaleDateString("fr-FR", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-          }),
-        };
-      });
+      const formattedTravels = await this.getFormattedTravel(allTravels);
+
       return formattedTravels;
     } catch (error) {
       throw new Error("Error fetching tasks: " + error.message);
@@ -44,11 +30,12 @@ class TravelService {
 
   async getTravelById(id) {
     try {
-      const task = await this.travelRepository.findById(id);
-      if (!task) {
-        return new Error("No tasks found");
+      const travel = await this.travelRepository.findById(id);
+      travel.available_places = await this.getAvailablePlaces(id);
+      if (!travel) {
+        return new Error("No travel found");
       }
-      return task;
+      return travel;
     } catch (error) {
       throw new Error("Error fetching task: " + error.message);
     }
@@ -56,8 +43,15 @@ class TravelService {
 
   async createTravel(travelData) {
     try {
-      const { start_date, end_date, depart, destination, places, price } =
-        travelData;
+      const {
+        start_date,
+        end_date,
+        depart,
+        destination,
+        places,
+        price,
+        status,
+      } = travelData;
       const newTravel = await this.travelRepository.create({
         start_date: moment(start_date).toDate(),
         end_date: moment(end_date).toDate(),
@@ -65,7 +59,7 @@ class TravelService {
         destination,
         places,
         price,
-        status: "available",
+        status,
       });
       if (!newTravel) {
         return new Error("No tasks found");
@@ -83,7 +77,7 @@ class TravelService {
       if (!travel) {
         throw new Error("travel not found");
       }
-      const updated = await this.travelRepository.update(travelData, id);
+      const updated = await this.travelRepository.update(id, travelData);
 
       if (!updated) {
         return new Error("No travel found");
@@ -129,17 +123,55 @@ class TravelService {
     }
   }
 
-  async toggleDone(id) {
+  async getAvailablePlaces(id) {
     try {
-      const task = await this.tasksRepository.findByPk(id);
-      if (!task) {
-        throw new Error("Task not found");
+      const travel = await this.travelRepository.findById(id);
+
+      if (!travel) {
+        throw new Error("Travel not found");
       }
-      task.done = !task.done;
-      await task.save();
-      return { message: "Task status toggled successfully" };
+      const maxPlaces = travel.places;
+      const countInscriptions =
+        await this.registrationRepository.countInscriptionByTravelId(id);
+
+      const availablePlaces = maxPlaces - countInscriptions;
+
+      return availablePlaces >= 0 ? availablePlaces : 0;
     } catch (error) {
-      throw new Error("Error toggling task status: " + error.message);
+      throw new Error("Error fetching available places: " + error.message);
+    }
+  }
+
+  async getFormattedTravel(travels) {
+    try {
+      return await Promise.all(
+        travels.map(async (travel) => {
+          const availablePlaces = await this.getAvailablePlaces(travel._id);
+          const existingRegistrations =
+            await this.registrationRepository.findByTravelId(travel._id);
+          return {
+            id: travel._id.toString(),
+            depart: travel.depart,
+            destination: travel.destination,
+            start_date: new Date(travel.start_date).toLocaleDateString("fr-FR"),
+            end_date: new Date(travel.end_date).toLocaleDateString("fr-FR"),
+            places: travel.places,
+            available_places: availablePlaces,
+            price: `${travel.price.toLocaleString("fr-FR")} €`,
+            status:
+              travel.status === "available"
+                ? "Disponible"
+                : travel.status === "booked"
+                ? "Complet"
+                : travel.status === "reserved"
+                ? "Réservé"
+                : "Annulé",
+            registrations: existingRegistrations,
+          };
+        })
+      );
+    } catch (error) {
+      throw new Error("Error formatting travels: " + error.message);
     }
   }
 }

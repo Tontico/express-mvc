@@ -1,0 +1,95 @@
+<table class="w-full my-5 table-fixed border-collapse">
+  <thead class="bg-gray-200 h-16">
+    <tr class="text-gray-700 font-semibold">
+      <th class="w-[25%] px-2 text-center">Id</th>
+      <th class="w-[15%] px-2 text-center">Status</th>
+      <th class="w-[15%] px-2 text-center">Vols</th>
+      <th class="w-[15%] px-2 text-center">Documents</th>
+      <th class="w-[15%] px-2 text-center">Paiements</th>
+      <th class="w-[15%] px-2 text-center">Actions</th>
+    </tr>
+  </thead>
+
+  <tbody class="divide-y divide-gray-200 text-center">
+    <% if (!registrations.length) { %>
+    <tr>
+      <td colspan="6" class="text-center text-red-500 py-4">
+        Aucun enregistrement disponible pour le moment.
+      </td>
+    </tr>
+    <% } else { %> <% registrations.forEach((registration) => { %>
+    <tr class="hover:bg-sky-100 transition-colors duration-200 h-16">
+      <td class="w-[25%] px-2 text-center"><%= registration.id %></td>
+      <td class="w-[15%] px-2 text-center">
+        <span
+          class="<%= registration.status === 'confirmed' ? 'text-green-600' : registration.status==='pending' ?'text-orange-600':'text-blue-600' %> text-xs font-semibold"
+        >
+          <%= registration.status === "pending" ? "En attente de documents" :
+          registration.status==="documents_uploaded" ? "En attente de paiement"
+          : "confirmé et payé" %>
+        </span>
+      </td>
+      <td class="w-[15%] px-2 text-center">
+        <%= registration.id_travel.depart %> → <%=
+        registration.id_travel.destination %>
+      </td>
+      <% if(registration.status === 'pending') { %>
+      <td class="w-[15%] px-2 text-center">
+        <a
+          href="/document/<%= registration.id %>"
+          class="bg-sky-500 text-white p-1 rounded hover:bg-sky-700 transition-colors duration-200 text-xl cursor-pointer"
+          ><span class="text-xl">📑</span>
+        </a>
+      </td>
+      <% } else { %>
+      <td class="w-[15%] px-2 text-center">
+        <a
+          href="/document/me/<%= registration.id %>"
+          class="bg-slate-500 text-white p-1 rounded hover:bg-slate-700 transition-colors duration-200 text-xl cursor-pointer"
+          ><span class="text-xl">📑</span>
+        </a>
+      </td>
+      <% } %> <% if(registration.status === 'documents_uploaded') { %>
+      <td class="w-[15%] px-2 text-center">
+        <a
+          href="/payment/<%= registration.id %>"
+          class="bg-yellow-300 text-white p-1 rounded hover:bg-yellow-500 transition-colors duration-200 text-xl cursor-pointer"
+          ><span class="text-xl">💸</span>
+        </a>
+      </td>
+      <% } else if (registration.status==="pending") { %>
+      <td class="w-[15%] px-2 text-center">
+        <span class="text-xs font-semibold text-orange-600"
+          >En attente de documents</span
+        >
+      </td>
+      <% } else { %>
+      <td class="w-[15%] px-2 text-center">
+        <a
+          href="/payment/me/<%= registration.id %>"
+          class="bg-lime-300 text-white p-1 rounded hover:bg-lime-500 transition-colors duration-200 text-xl cursor-pointer"
+          ><span class="text-xl">💸</span>
+        </a>
+      </td>
+      <% } %>
+      <td class="w-[15%] px-1 text-center">
+        <div class="flex gap-3 justify-center">
+          <form
+            action="/registration/delete/<%= registration.id %>"
+            method="POST"
+            class="inline"
+          >
+            <input type="hidden" name="_method" value="DELETE" />
+            <input
+              class="bg-red-500 text-white p-1 rounded hover:bg-red-700 transition-colors duration-200 text-xl cursor-pointer"
+              type="submit"
+              value="🗑️"
+              onclick="return confirm('Voulez vous annuler ce voyage ?')"
+            />
+          </form>
+        </div>
+      </td>
+    </tr>
+    <% }) %> <% } %>
+  </tbody>
+</table>

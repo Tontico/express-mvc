@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const usersRepository = require("../repositories/userRepository");
+const usersRepository = require("../repository/userRepository");
 
 const setUserData = async (req, res, next) => {
   try {
@@ -54,7 +54,7 @@ const redirectIfAuthenticated = (req, res, next) => {
   if (res.locals.isAuthenticated) {
     return res.redirect("/");
   }
-  next();
+  return next();
 };
 
 module.exports = {

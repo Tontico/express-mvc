@@ -1,10 +1,11 @@
 const express = require("express");
-const userController = require("../controller/userController");
-
 const router = express.Router();
+const userController = require("../controller/userController");
+const { isAuthenticated } = require("../middleware/auth");
 
-router.get("/me", homeController.index);
-router.patch("/update/me", userController.update);
-router.get("/edit/me", userController.edit);
+router.use(isAuthenticated);
+router.get("/me", userController.getUser);
+router.patch("/update/me", userController.updateUser);
+router.get("/edit/me", userController.showUserForm);
 
 module.exports = router;

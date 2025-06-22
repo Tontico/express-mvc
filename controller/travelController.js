@@ -6,7 +6,9 @@ class TravelController {
   }
   index = async (req, res) => {
     try {
-      const formattedTravels = await this.travelService.getAllTravels();
+      const user = req.user;
+      const formattedTravels = await this.travelService.getAllTravels(user);
+
       const path = req.originalUrl;
       const query = req.query.message || null;
       let renderPath = "travel/index";
@@ -15,7 +17,8 @@ class TravelController {
       }
 
       return res.render(renderPath, {
-        travels: formattedTravels,
+        travels: formattedTravels || [],
+        isAdminPath: path.includes("/admin/travel"),
         message: query ? "Voyage supprimé avec succès" : null,
       });
     } catch (error) {
@@ -30,6 +33,7 @@ class TravelController {
   show = async (req, res) => {
     try {
       const travel = await this.travelService.getTravelById(req.params.id);
+
       return res.render("travel/show", {
         title: "Voyage",
         travel: travel,
@@ -109,16 +113,6 @@ class TravelController {
       return res.status(500).send("Internal Server Error");
     }
   };
-
-  // toggleDone = async (req, res) => {
-  //   try {
-  //     await this.travelService.toggleDone(req.params.id);
-  //     res.redirect("/tasks");
-  //   } catch (error) {
-  //     console.error("Error toggling task done status:", error);
-  //     return res.status(500).send("Internal Server Error");
-  //   }
-  // };
 }
 
 module.exports = new TravelController();

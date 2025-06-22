@@ -16,5 +16,8 @@ class userRepository {
   async findById(id) {
     return this.users.findById(id);
   }
+  async findByIdAndUpdate(id, userData) {
+    return this.users.findByIdAndUpdate(id, userData, { new: true });
+  }
 }
 module.exports = new userRepository();

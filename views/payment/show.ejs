@@ -1,0 +1,29 @@
+<%- contentFor("main") %>
+<div class="max-w-2xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
+  <h2 class="text-2xl font-bold mb-6 text-center">Paiement du voyage</h2>
+
+  <!-- Résumé en une carte -->
+  <div class="border border-gray-200 rounded-lg p-6 mb-6">
+    <div class="text-center mb-4">
+      <h3 class="text-xl font-semibold">
+        <%= data.travel.depart %> → <%= data.travel.destination %>
+      </h3>
+      <p class="text-gray-600">
+        <%= new Date(data.travel.start_date).toLocaleDateString('fr-FR') %>
+      </p>
+    </div>
+
+    <div class="bg-gray-50 rounded p-4 mb-4">
+      <div class="flex justify-between items-center">
+        <span>Voyageur:</span>
+        <span class="font-medium"
+          ><%= data.user.firstname %> <%= data.user.lastname %></span
+        >
+      </div>
+      <div class="flex justify-between items-center mt-2">
+        <span>Prix:</span>
+        <span class="text-2xl font-bold text-blue-600"><%= data.price %>€</span>
+      </div>
+    </div>
+  </div>
+</div>

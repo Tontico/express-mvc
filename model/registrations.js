@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const inscriptionsSchema = new mongoose.Schema({
+const registrationsSchema = new mongoose.Schema({
   id_user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -23,9 +23,9 @@ const inscriptionsSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["pending", "confirmed", "canceled"],
+    enum: ["pending", "documents_uploaded", "confirmed", "canceled"],
     default: "pending",
   },
 });
 
-module.exports = mongoose.model("Inscription", inscriptionsSchema);
+module.exports = mongoose.model("Registration", registrationsSchema);

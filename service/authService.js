@@ -1,4 +1,4 @@
-const usersRepository = require("../repositories/userRepository");
+const usersRepository = require("../repository/userRepository");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -9,7 +9,7 @@ class authService {
     this.jwt = jwt;
   }
 
-  async register(data, response) {
+  async register(data) {
     try {
       const { password, email, firstname, lastname, phone } = data;
       const existingUser = await this.usersRepository.findOne({ email });
@@ -35,16 +35,15 @@ class authService {
         throw new Error("Token generation failed");
       }
 
-      this.generateSecureCookie(response, token);
-
       newUser.token = token;
+      console.log("New user registered:", newUser);
       return newUser;
     } catch (error) {
       throw new Error("Registration failed: " + error.message);
     }
   }
 
-  async login(email, password, response) {
+  async login(email, password) {
     try {
       const user = await this.usersRepository.findOne({ email });
       if (!user) {
@@ -58,8 +57,6 @@ class authService {
       if (!token) {
         throw new Error("Token generation failed");
       }
-
-      this.generateSecureCookie(response, token);
 
       user.token = token;
 
@@ -108,6 +105,15 @@ class authService {
       return user || null;
     } catch (error) {
       throw new Error("Token verification failed: " + error.message);
+    }
+  }
+
+  async checkEmailExists(email) {
+    try {
+      const user = await this.usersRepository.findOne({ email });
+      return !!user;
+    } catch (error) {
+      throw new Error("Error checking email existence: " + error.message);
     }
   }
 }

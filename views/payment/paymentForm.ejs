@@ -1,0 +1,55 @@
+<%- contentFor("main") %>
+<div class="max-w-3xl mx-auto mt-8 p-6 bg-white rounded">
+  <div class="mb-6">
+    <p class="mb-4">
+      Vous êtes sur le point de payer pour le voyage :
+      <strong
+        ><%= data.travel.depart %> → <%= data.travel.destination %></strong
+      >
+    </p>
+    <p class="mb-4">
+      <strong>Date de départ :</strong>
+      <%= new Date(data.travel.start_date).toLocaleDateString() %>
+    </p>
+    <p class="mb-4">
+      <strong>Date d'arrivée :</strong>
+      <%= new Date(data.travel.end_date).toLocaleDateString() %>
+    </p>
+  </div>
+  <form action="/payment/<%= data.id_registration %>" method="POST">
+    <h2 class="text-2xl font-bold mb-6 text-center">
+      Paiement pour le voyage N°<%= data.travel.id %>
+    </h2>
+
+    <% if (typeof error !== "undefined") { %>
+    <div
+      class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4"
+    >
+      <%= error %>
+    </div>
+    <% } %>
+    <div class="mb-6">
+      <p class="text-lg font-semibold mb-2">Montant à payer :</p>
+      <p class="text-2xl font-bold text-blue-600"><%= data.travel.price %>€</p>
+    </div>
+    <select
+      name="paymentMethod"
+      class="w-full p-3 border border-gray-300 rounded mb-6"
+      required
+    >
+      <option value="" disabled selected>
+        Choisissez un moyen de paiement
+      </option>
+      <option value="creditCard">Carte de crédit</option>
+      <option value="paypal">PayPal</option>
+      <option value="bankTransfer">Virement bancaire</option>
+    </select>
+    <input type="hidden" name="amount" value="<%= data.travel.price %>" />
+    <button
+      type="submit"
+      class="w-full bg-blue-600 text-white p-3 rounded hover:bg-blue-700 transition-colors duration-200"
+    >
+      Valider
+    </button>
+  </form>
+</div>
