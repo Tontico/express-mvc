@@ -42,8 +42,8 @@ npm run test /test/example.test.js "
 
 ```env
 PORT=3000
-NODE_ENV=development
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/travel_booking?retryWrites=true&w=majority
+SECRET_KEY=your_secret_key
+DB_URL=mongodb+srv://username:password@cluster.mongodb.net/travel_booking?retryWrites=true&w=majority
 ```
 
 ## Test en mode administrateur
