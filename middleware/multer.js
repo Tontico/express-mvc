@@ -2,6 +2,7 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
+// Configure storage for uploaded files
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const uploadDir = path.join(__dirname, "../uploads/documents");
@@ -37,6 +38,7 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
+// Create the multer upload instance
 const upload = multer({
   storage: storage,
   limits: {

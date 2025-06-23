@@ -60,7 +60,6 @@ class RegistrationService {
       if (!registration) {
         throw new Error("No inscription created");
       }
-      console.log("Registration created successfully:", registration);
 
       const travel = await this.travelRepository.findById(
         registration.id_travel

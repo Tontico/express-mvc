@@ -32,7 +32,10 @@ describe("TravelService", () => {
       registrationRepository.countInscriptionByTravelId.mockResolvedValue(10);
       registrationRepository.findByTravelId.mockResolvedValue([]);
 
-      const result = await travelService.getAllTravels({ role: "user" });
+      const result = await travelService.getAllTravels(
+        { _id: "user123", roles: "user" },
+        false
+      );
 
       expect(result).toHaveLength(1);
       expect(result[0].depart).toBe("Paris");
@@ -59,7 +62,10 @@ describe("TravelService", () => {
       registrationRepository.countInscriptionByTravelId.mockResolvedValue(5);
       registrationRepository.findByTravelId.mockResolvedValue([]);
 
-      const result = await travelService.getAllTravels({ role: "admin" });
+      const result = await travelService.getAllTravels(
+        { _id: "user123", roles: "admin" },
+        true
+      );
 
       expect(travelRepository.findAll).toHaveBeenCalled();
       expect(result).toHaveLength(1);

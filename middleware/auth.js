@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const usersRepository = require("../repository/userRepository");
 
+// Middleware for authentication and authorization
 const setUserData = async (req, res, next) => {
   try {
     const token = req.cookies.token;
@@ -32,7 +33,6 @@ const setUserData = async (req, res, next) => {
     next();
   } catch (error) {
     console.error("Authentication error:", error);
-    // return res.status(401).redirect("auth/login");
   }
 };
 const isAuthenticated = async (req, res, next) => {

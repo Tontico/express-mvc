@@ -36,7 +36,6 @@ class authService {
       }
 
       newUser.token = token;
-      console.log("New user registered:", newUser);
       return newUser;
     } catch (error) {
       throw new Error("Registration failed: " + error.message);

@@ -7,12 +7,16 @@ class TravelController {
   index = async (req, res) => {
     try {
       const user = req.user;
-      const formattedTravels = await this.travelService.getAllTravels(user);
-
       const path = req.originalUrl;
+      const isAdminPath = path.includes("/admin/travel");
+      const formattedTravels = await this.travelService.getAllTravels(
+        user,
+        isAdminPath
+      );
+
       const query = req.query.message || null;
       let renderPath = "travel/index";
-      if (path.includes("/admin/travel")) {
+      if (isAdminPath) {
         renderPath = "admin/travel/index";
       }
 

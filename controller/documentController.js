@@ -17,7 +17,6 @@ class DocumentController {
         insurance: "Assurance voyage",
       };
       const message = req.query.message ? "Document ajouté avec succès." : null;
-      console.log("Travels:", travels);
       res.render("admin/document/addRequiredDocumentsForm", {
         title: "Document requis",
         travels: travels,
@@ -47,7 +46,6 @@ class DocumentController {
         id_travel,
         req.body.document
       );
-      console.log("Document ajouté avec succès :", req.body.document);
 
       res.redirect(`/admin/document/${id_travel}?message=true`);
     } catch (error) {

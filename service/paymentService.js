@@ -76,7 +76,6 @@ class PaymentService {
       const payments = await this.paymentRepository.findAllPaymentsByTravelId(
         id_travel
       );
-      console.log("Payments fetched for travel ID:", id_travel, payments);
 
       return { payments, travel };
     } catch (error) {

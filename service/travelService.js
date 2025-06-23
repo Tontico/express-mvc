@@ -9,10 +9,10 @@ class TravelService {
     this.moment = moment;
   }
 
-  async getAllTravels(user) {
+  async getAllTravels(user, isAdminPath) {
     try {
       let allTravels;
-      if (user && user.role === "admin") {
+      if (user && user.roles === "admin" && isAdminPath) {
         allTravels = await this.travelRepository.findAll();
       } else {
         allTravels = await this.travelRepository.findAllAvailable();
@@ -20,7 +20,10 @@ class TravelService {
       if (!allTravels || allTravels.length === 0) {
         return new Error("No tasks found");
       }
-      const formattedTravels = await this.getFormattedTravel(allTravels);
+      const formattedTravels = await this.getFormattedTravel(
+        allTravels,
+        user._id
+      );
 
       return formattedTravels;
     } catch (error) {
@@ -143,13 +146,16 @@ class TravelService {
     }
   }
 
-  async getFormattedTravel(travels) {
+  async getFormattedTravel(travels, id_user = null) {
     try {
       return await Promise.all(
         travels.map(async (travel) => {
           const availablePlaces = await this.getAvailablePlaces(travel._id);
           const existingRegistrations =
-            await this.registrationRepository.findByTravelId(travel._id);
+            await this.registrationRepository.findByUserIdAndTravelId(
+              id_user,
+              travel._id
+            );
           return {
             id: travel._id.toString(),
             depart: travel.depart,

@@ -32,11 +32,6 @@ class DocumentService {
       const documents = await this.registrationRepository.findByRegistrationId(
         id_registration
       );
-      console.log(
-        "Documents fetched for registration ID:",
-        id_registration,
-        documents
-      );
 
       if (!documents || documents.length === 0) {
         throw new Error("No documents found for the provided registration ID");
@@ -125,9 +120,6 @@ class DocumentService {
       const registrations = await this.registrationRepository.findByTravelId(
         id_travel
       );
-      if (!registrations || registrations.length === 0) {
-        throw new Error("No registrations found for the provided travel ID");
-      }
 
       const documents = await this.documentRepository.findAllDocumentsByRegId(
         registrations.map((reg) => reg._id)

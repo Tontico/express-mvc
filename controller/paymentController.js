@@ -57,7 +57,6 @@ class PaymentController {
       if (!data) {
         return res.status(404).send("Payment not found");
       }
-      console.log(data);
 
       res.render("payment/show", {
         title: "Payment Details",
@@ -79,7 +78,6 @@ class PaymentController {
       const payments = await this.paymentService.getAllPaymentsByTravelId(
         id_travel
       );
-      console.log(payments);
       return res.render("admin/payment/travelsPayments", {
         title: "Payments du voyage",
         payments: payments.payments,

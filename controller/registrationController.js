@@ -29,7 +29,6 @@ class RegistrationController {
     try {
       const { id_travel } = req.params;
       const id_user = req.user._id;
-      console.log("User ID:", id_user);
 
       if (!id_travel || !id_user) {
         return res.status(400).send("Trip ID and User ID are required");
