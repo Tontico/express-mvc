@@ -12,6 +12,8 @@ const {
   updateTravelValidator,
 } = require("../validator/travelValidator");
 
+const validate = require("../validator/validate");
+
 const router = express.Router();
 
 router.use(isAuthenticated);
@@ -19,11 +21,18 @@ router.use(isAdmin);
 
 router.get("/travel", travelController.index);
 router.get("/travel/create", travelController.create);
-router.post("/travel/store", createTravelValidator, travelController.store);
 router.get("/travel/edit/:id", travelController.edit);
+
+router.post(
+  "/travel/store",
+  createTravelValidator,
+  validate("admin/travel/create"),
+  travelController.store
+);
 router.patch(
   "/travel/update/:id",
   updateTravelValidator,
+  validate("admin/travel/edit"),
   travelController.update
 );
 

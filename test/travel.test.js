@@ -94,15 +94,30 @@ describe("TravelService", () => {
         places: 50,
         price: 200,
         status: "available",
+        documents_required: ["passport"],
+      };
+      const expectedTravelResult = {
+        _id: "123",
+        start_date: "2023-10-01",
+        end_date: "2023-10-10",
+        depart: "Paris",
+        destination: "Londres",
+        places: 50,
+        price: 200,
+        status: "available",
+        documents_required: ["passport"],
       };
 
-      const createdTravel = { _id: "123", ...travelData };
-      travelRepository.create.mockResolvedValue(createdTravel);
+      travelRepository.create.mockResolvedValue(expectedTravelResult);
 
       const result = await travelService.createTravel(travelData);
 
       expect(result.success).toBe(true);
       expect(result.newTravel._id).toBe("123");
+      expect(result).toEqual({
+        success: true,
+        newTravel: expectedTravelResult,
+      });
     });
   });
 

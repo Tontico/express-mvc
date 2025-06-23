@@ -1,28 +1,23 @@
 const { body, param } = require("express-validator");
 
 const createTravelValidator = [
-  body("title")
+  body("depart")
     .notEmpty()
-    .withMessage("Title is required")
-    .isLength({ max: 100 })
-    .withMessage("Title must be less than 100 characters"),
-  body("description")
-    .notEmpty()
-    .withMessage("Description is required")
-    .isLength({ max: 500 })
-    .withMessage("Description must be less than 500 characters"),
+    .withMessage("depart is required")
+    .isLength({ max: 20 })
+    .withMessage("depart must be less than 20 characters"),
   body("destination")
     .notEmpty()
     .withMessage("Destination is required")
-    .isLength({ max: 100 })
-    .withMessage("Destination must be less than 100 characters"),
-  body("startDate")
+    .isLength({ max: 20 })
+    .withMessage("Destination must be less than 20 characters"),
+  body("start_date")
     .notEmpty()
     .withMessage("Start date is required")
     .isISO8601()
     .toDate()
     .withMessage("Start date must be a valid date"),
-  body("endDate")
+  body("end_date")
     .notEmpty()
     .withMessage("End date is required")
     .isISO8601()
@@ -51,18 +46,14 @@ const updateTravelValidator = [
     .withMessage("Travel ID is required")
     .isMongoId()
     .withMessage("Invalid Travel ID format"),
-  body("title")
+  body("depart")
     .optional()
-    .isLength({ max: 100 })
-    .withMessage("Title must be less than 100 characters"),
-  body("description")
-    .optional()
-    .isLength({ max: 500 })
-    .withMessage("Description must be less than 500 characters"),
+    .isLength({ max: 20 })
+    .withMessage("Depart must be less than 20 characters"),
   body("destination")
     .optional()
-    .isLength({ max: 100 })
-    .withMessage("Destination must be less than 100 characters"),
+    .isLength({ max: 20 })
+    .withMessage("Destination must be less than 20 characters"),
   body("startDate").optional().isISO8601().toDate(),
   body("endDate").optional().isISO8601().toDate(),
   body("price").optional().isNumeric(),

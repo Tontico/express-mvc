@@ -7,7 +7,11 @@ class UserService {
 
   async getUserById(userId) {
     try {
-      return await this.userRepository.findById(userId);
+      const user = await this.userRepository.findById(userId);
+      if (!user) {
+        throw new Error("User not found");
+      }
+      return user;
     } catch (error) {
       throw new Error("Error fetching user: " + error.message);
     }

@@ -60,6 +60,7 @@ class TravelService {
         places,
         price,
         status,
+        documents_required: ["passport"],
       });
       if (!newTravel) {
         return new Error("No tasks found");

@@ -54,6 +54,7 @@ class PaymentService {
       const createdPayment = await this.paymentRepository.create(payment);
 
       registration.status = "confirmed";
+      registration.payment = createdPayment._id;
       await this.registrationRepository.update(registration._id, registration);
       return createdPayment;
     } catch (error) {

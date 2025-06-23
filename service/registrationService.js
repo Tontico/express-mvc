@@ -88,10 +88,7 @@ class RegistrationService {
       const inscriptions = await this.registrationRepository.findByUserId(
         id_user
       );
-      if (!inscriptions || inscriptions.length === 0) {
-        return new Error("No inscriptions found");
-      }
-      return inscriptions;
+      return inscriptions || [];
     } catch (error) {
       throw new Error("Error fetching inscriptions: " + error.message);
     }
