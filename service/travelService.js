@@ -20,9 +20,10 @@ class TravelService {
       if (!allTravels || allTravels.length === 0) {
         return new Error("No tasks found");
       }
+      const userId = user ? user._id : null;
       const formattedTravels = await this.getFormattedTravel(
         allTravels,
-        user._id
+        userId
       );
 
       return formattedTravels;
@@ -151,11 +152,14 @@ class TravelService {
       return await Promise.all(
         travels.map(async (travel) => {
           const availablePlaces = await this.getAvailablePlaces(travel._id);
-          const existingRegistrations =
-            await this.registrationRepository.findByUserIdAndTravelId(
-              id_user,
-              travel._id
-            );
+          let existingRegistrations = [];
+          if (id_user) {
+            existingRegistrations =
+              await this.registrationRepository.findByUserIdAndTravelId(
+                id_user,
+                travel._id
+              );
+          }
           return {
             id: travel._id.toString(),
             depart: travel.depart,

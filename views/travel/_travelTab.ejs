@@ -98,20 +98,27 @@
             />
           </form>
         </div>
-        <% } else { %> <% if(travel.status === 'Disponible' &&
-        !travel.registrations) { %>
+        <% } else { %> <% if(isAuthenticated) { %> %> <% if(travel.status ===
+        'Disponible' && (typeof travel.registrations !== 'undefined' &&
+        !travel.registrations )) { %>
         <a
           class="bg-green-500 text-white p-1 rounded hover:bg-green-700 transition-colors duration-200 text-xl"
           href="/travel/<%= travel.id%>"
           >👁️</a
         >
-        <% } else if(travel.registrations){ %>
+        <% } else { %>
         <a
           class="bg-orange-500 text-white p-1.5 rounded hover:bg-orange-700 transition-colors duration-200"
           href="/registration/<%= travel.id%>"
           >Voir réservation</a
         >
-        <% } %> <% } %>
+        <% } %> <% } else{ %>
+        <a
+          class="bg-green-500 text-white p-1 rounded hover:bg-green-700 transition-colors duration-200 text-xl"
+          href="/travel/<%= travel.id%>"
+          >👁️</a
+        >
+        <% } } %>
       </td>
     </tr>
     <% }) %> <% } %>
