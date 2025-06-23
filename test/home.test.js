@@ -1,9 +1,10 @@
 const travelRepository = require("../repository/travelRepository");
 const homeService = require("../service/homeService");
 const registrationRepository = require("../repository/registrationRepository");
-
+const travelService = require("../service/travelService");
 jest.mock("../repository/travelRepository");
 jest.mock("../repository/registrationRepository");
+jest.mock("../service/travelService");
 
 describe("HomeService", () => {
   beforeEach(() => {
@@ -26,23 +27,34 @@ describe("HomeService", () => {
         },
       ];
 
-      travelRepository.sortSixTravels.mockResolvedValue(mockTravels);
-      travelRepository.findById.mockResolvedValue(mockTravels[0]);
+      const mockFormattedTravels = [
+        {
+          id: "123",
+          depart: "Paris",
+          destination: "Londres",
+          start_date: "01/10/2023",
+          end_date: "10/10/2023",
+          places: 50,
+          available_places: 40,
+          price: "200 €",
+          status: "Disponible",
+          registrations: [],
+        },
+      ];
 
-      registrationRepository.countInscriptionByTravelId.mockResolvedValue(10);
-      registrationRepository.findByTravelId.mockResolvedValue([]);
+      travelRepository.sortSixTravels.mockResolvedValue(mockTravels);
+      travelService.getFormattedTravel.mockResolvedValue(mockFormattedTravels);
 
       const result = await homeService.index();
 
       expect(result).toHaveLength(1);
       expect(result[0].depart).toBe("Paris");
       expect(result[0].available_places).toBe(40);
+
       expect(travelRepository.sortSixTravels).toHaveBeenCalled();
-      expect(travelRepository.findById).toHaveBeenCalledWith("123");
-      expect(
-        registrationRepository.countInscriptionByTravelId
-      ).toHaveBeenCalledWith("123");
-      expect(registrationRepository.findByTravelId).toHaveBeenCalledWith("123");
+      expect(travelService.getFormattedTravel).toHaveBeenCalledWith(
+        mockTravels
+      );
     });
 
     it("should throw an error if no featured travels found", async () => {
