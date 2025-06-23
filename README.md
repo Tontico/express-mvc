@@ -25,17 +25,16 @@ npm install
 ### 3. Démarrer l'application
 
 ```bash
-# Mode développement
 npm run dev
 ```
 
 ## Tests
 
 ```bash
-# Lancer tous les tests en mode watch
+#Lance tous les tests en mode watch
 npm run test
 
-# Lancer un test spécifique
+#Lance un test spécifique
 npm run test /test/example.test.js "
 ```
 
